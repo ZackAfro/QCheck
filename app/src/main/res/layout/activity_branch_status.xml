@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.neilbeukes.qcheck.branchStatus">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Branch status here ..."
+        android:gravity="center_vertical|center_horizontal"/>
+
 </android.support.constraint.ConstraintLayout>
