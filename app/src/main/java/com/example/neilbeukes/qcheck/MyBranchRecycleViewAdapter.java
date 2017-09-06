@@ -1,6 +1,7 @@
 package com.example.neilbeukes.qcheck;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,18 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
         holder.myBranchName.setText(branch);
         holder.myBranchStatus.setText(status);
         holder.myBranchAdress.setText(adress);
+
+        switch (status) {
+            case "Busy":
+                holder.myBranchStatus.setTextColor(Color.parseColor("#f44336"));
+                break;
+            case "Quiet":
+                holder.myBranchStatus.setTextColor(Color.parseColor("#4caf50"));
+                break;
+            case "Normal":
+                holder.myBranchStatus.setTextColor(Color.parseColor("#f9a825"));
+                break;
+        }
     }
 
     // total number of rows

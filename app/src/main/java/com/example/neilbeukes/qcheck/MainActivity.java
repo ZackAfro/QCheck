@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvBranches);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyBranchRecycleViewAdapter(this, branches);
-        //adapter.setClickListener(this);
+        adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
     }
