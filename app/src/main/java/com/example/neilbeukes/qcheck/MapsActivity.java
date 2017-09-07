@@ -68,6 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String[] mLikelyPlaceAddresses;
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
+    private String branch = "";
 
 
     @Override
@@ -90,6 +91,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        branch = getIntent().getStringExtra("branch");
     }
 
     /**
@@ -144,6 +147,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(west).title("West Branch"));
         mMap.addMarker(new MarkerOptions().position(south).title("South branch"));
 
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(north, 15));
+
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
             @Override
@@ -175,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         updateLocationUI();
 
         // Get the current location of the device and set the position of the map.
-        getDeviceLocation();
+        //getDeviceLocation();
     }
 
     /**

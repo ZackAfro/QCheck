@@ -82,8 +82,8 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
     }
 
     // convenience method for getting data at click position
-    public String getItem(int id) {
-        return mData.get(id).getName();
+    public BranchInfo getItem(int id) {
+        return mData.get(id);
     }
 
     // allows clicks events to be caught

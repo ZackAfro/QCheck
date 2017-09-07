@@ -1,16 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.neilbeukes.qcheck.branchStatus">
+    tools:context="com.example.neilbeukes.qcheck.BranchStatus">
+
+    <ImageView
+        android:id="@+id/ivBranchImage"
+        android:layout_height="165dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvBranchName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Branch status here ..."
-        android:gravity="center_vertical|center_horizontal"/>
+        android:layout_alignLeft="@id/ivBranchImage"
+        android:layout_alignTop="@id/ivBranchImage"
+        android:layout_alignRight="@id/ivBranchImage"
+        android:layout_alignBottom="@id/ivBranchImage"
+        android:layout_margin="1dp"
+        android:gravity="bottom|start"
+        android:text="North Branch"
+        android:textSize="30sp"
+        android:textColor="#000000" />
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:cardview="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        cardview:cardCornerRadius="2dp"
+        cardview:cardElevation="3dp"
+        cardview:cardUseCompatPadding="true"
+        android:layout_below="@+id/ivBranchImage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <Button
+                android:id="@+id/btnViewMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/vAdress"
+                android:layout_alignRight="@+id/vAdress"
+                android:layout_alignTop="@+id/tvBranchAdress"
+                android:background="@drawable/button_border"
+                android:text="View Map" />
+
+            <TextView
+                android:id="@+id/tvBusinessHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="7dp"
+                android:textColor="#000000"
+                android:text="Open Today : 08:00 - 16:30" />
+
+            <View
+                android:id="@+id/vTime"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvBusinessHours"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/holo_red_light"/>
+
+            <TextView
+                android:id="@+id/tvBranchAdress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vTime"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:scrollHorizontally="false"
+                android:text="22 Commissioner street, Johannesburg"
+                android:textColor="#000000" />
+
+            <View
+            android:id="@+id/vAdress"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/btnViewMap"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/holo_red_light"/>
+
+            <TextView
+                android:id="@+id/tvBranchStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_below="@+id/vAdress"
+                android:layout_marginTop="10dp"
+                android:textColor="#000000"
+                android:text="North Branch is currently Busy" />
+
+            <Button
+                android:id="@+id/btnViewQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QStatus"
+                android:background="@drawable/button_border"
+                android:layout_alignTop="@+id/tvBranchStatus"
+                android:layout_alignRight="@+id/vAdress"
+                android:layout_alignEnd="@+id/vAdress" />
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
