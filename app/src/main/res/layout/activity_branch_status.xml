@@ -11,7 +11,8 @@
         android:layout_height="165dp"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/southbranch"/>
 
     <TextView
         android:id="@+id/tvBranchName"
@@ -81,7 +82,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:scrollHorizontally="false"
+                android:layout_toLeftOf="@+id/btnViewMap"
+                android:layout_toStartOf="@+id/btnViewMap"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:text="22 Commissioner street, Johannesburg"
                 android:textColor="#000000" />
 
@@ -103,6 +107,10 @@
                 android:layout_marginStart="10dp"
                 android:layout_below="@+id/vAdress"
                 android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/btnViewQ"
+                android:layout_toStartOf="@+id/btnViewQ"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:textColor="#000000"
                 android:text="North Branch is currently Busy" />
 

@@ -4,32 +4,20 @@
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
+    android:layout_marginBottom="4dp"
     cardview:cardCornerRadius="2dp"
-    cardview:cardElevation="3dp"
-    cardview:cardUseCompatPadding="true">
+    cardview:cardElevation="3dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/thumbnail"
-            android:layout_height="55dp"
-            android:layout_width="60dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_alignParentTop="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/absa"/>
-
         <TextView
             android:id="@+id/tvBranchName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/thumbnail"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginLeft="7dp"
             android:maxLines="3"
             android:padding="6dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -41,10 +29,9 @@
             android:id="@+id/tvBranchAdress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/thumbnail"
             android:layout_below="@id/tvBranchName"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginLeft="7dp"
             android:maxLines="3"
             android:padding="5dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"

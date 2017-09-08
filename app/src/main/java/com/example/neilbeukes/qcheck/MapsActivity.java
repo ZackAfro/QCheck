@@ -68,7 +68,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String[] mLikelyPlaceAddresses;
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
-    private String branch = "";
+    private double lat = 0;
+    private double lng = 0;
 
 
     @Override
@@ -92,7 +93,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        branch = getIntent().getStringExtra("branch");
+        lat = getIntent().getDoubleExtra("lat", 0);
+        lng = getIntent().getDoubleExtra("lng", 0);
+
+
+
     }
 
     /**
@@ -106,30 +111,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             super.onSaveInstanceState(outState);
         }
     }
-//
-//    /**
-//     * Sets up the options menu.
-//     * @param menu The options menu.
-//     * @return Boolean.
-//     */
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.current_place_menu, menu);
-//        return true;
-//    }
-
-//    /**
-//     * Handles a click on the menu option to get a place.
-//     * @param item The menu item to handle.
-//     * @return Boolean.
-//     */
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.option_get_place) {
-//            showCurrentPlace();
-//        }
-//        return true;
-//    }
 
     /**
      * Manipulates the map when it's available.
@@ -138,16 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
-        // Add markers to mock branches
-        LatLng west = new LatLng(-26.206521, 28.047182);
-        LatLng north = new LatLng(-26.203921, 28.047182);
-        LatLng south = new LatLng(-26.207903, 28.051082);
-        mMap.addMarker(new MarkerOptions().position(north).title("North branch"));
-        mMap.addMarker(new MarkerOptions().position(west).title("West Branch"));
-        mMap.addMarker(new MarkerOptions().position(south).title("South branch"));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(north, 15));
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
@@ -172,6 +143,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return infoWindow;
             }
         });
+
+        LatLng current = new LatLng(lat, lng);
+        mMap.addMarker(new MarkerOptions().position(current).title(getIntent().getStringExtra("name")));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(lat,
+                        lng),20));
 
         // Prompt the user for permission.
         getLocationPermission();
@@ -217,7 +195,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("Exception: %s", e.getMessage());
         }
     }
-
 
     /**
      * Prompts the user for permission to use the device location.
