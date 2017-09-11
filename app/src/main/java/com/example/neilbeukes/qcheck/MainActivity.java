@@ -3,6 +3,7 @@ package com.example.neilbeukes.qcheck;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tvBranchesFound =  (TextView) findViewById(R.id.tvBranchFound);
         rvBranches = (RecyclerView) findViewById(R.id.rvBranches);
-
         getLocation();
 
     }
@@ -139,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
 
     public void saveBrancesToArray(Location location){
         final Branches brances = new Branches();
+        tvBranchesFound.setText("Locating nearest branches...");
 
         brances.checkForBranches(location, getApplicationContext(),new VolleyCallback(){
             @Override
@@ -174,10 +178,8 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
     }
 
     public void populateBranches(){
-
         rvBranches.setVisibility(View.INVISIBLE);
         tvBranchesFound = (TextView) findViewById(R.id.tvBranchFound);
-        tvBranchesFound.setText("Locating nearest branches...");
         rvBranches.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyBranchRecycleViewAdapter(this, branchArray);
         adapter.setClickListener(this);
