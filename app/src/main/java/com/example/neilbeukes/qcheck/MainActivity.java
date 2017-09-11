@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,17 +46,37 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
     private boolean mLocationPermissionGranted;
     ArrayList<BranchInfo> branchArray = new ArrayList<>();
     TextView tvBranchesFound;
+    RecyclerView rvBranches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rvBranches = (RecyclerView) findViewById(R.id.rvBranches);
 
-        tvBranchesFound = (TextView) findViewById(R.id.tvBranchFound);
-        tvBranchesFound.setText("Locating nearest branches...");
         getLocation();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id == R.id.itemRefresh){
+            findViewById(R.id.pbRefresh).setVisibility(View.VISIBLE);
+            branchArray.clear();
+            getLocation();
+            populateBranches();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -151,12 +174,16 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
     }
 
     public void populateBranches(){
-        // set up the RecyclerView
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvBranches);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        rvBranches.setVisibility(View.INVISIBLE);
+        tvBranchesFound = (TextView) findViewById(R.id.tvBranchFound);
+        tvBranchesFound.setText("Locating nearest branches...");
+        rvBranches.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyBranchRecycleViewAdapter(this, branchArray);
         adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
+        findViewById(R.id.pbRefresh).setVisibility(View.GONE);
+        rvBranches.setVisibility(View.VISIBLE);
+        rvBranches.setAdapter(adapter);
         tvBranchesFound.setText("Here is the Absa branches near you :");
 
     }
