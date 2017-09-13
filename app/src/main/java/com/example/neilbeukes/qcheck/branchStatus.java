@@ -10,43 +10,38 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
-public class BranchStatus extends AppCompatActivity {
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+
+public class BranchStatus extends AppCompatActivity implements OnMapReadyCallback {
+
+        BranchInfo branchInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_branch_status);
 
-        final BranchInfo branchInfo = new Gson().fromJson(getIntent().getStringExtra("branchInfo"), BranchInfo.class);
-        //Log.w("branchInfo", getIntent().getStringExtra("branchInfo"));
+        branchInfo = new Gson().fromJson(getIntent().getStringExtra("branchInfo"), BranchInfo.class);
 
-        TextView tvAdress = (TextView) findViewById(R.id.tvBranchAdress);
-        TextView tvBranchMame = (TextView) findViewById(R.id.tvBranchName);
+        getSupportActionBar().setTitle(branchInfo.getName());
+
         TextView tvStatus = (TextView) findViewById(R.id.tvBranchStatus);
         TextView tvTime = (TextView) findViewById(R.id.tvBusinessHours);
         setOpen(branchInfo.isOpen(), tvTime);
-        ImageView ivBranch = (ImageView) findViewById(R.id.ivBranchImage);
+        MapView mapView = (MapView) findViewById(R.id.map_view);
 
-        tvAdress.setText(branchInfo.getAdress());
-        tvBranchMame.setText(branchInfo.getName());
         tvStatus.setText(branchInfo.getName() + " is currently " + branchInfo.getStatus());
 
         Button btnViewQ = (Button) findViewById(R.id.btnViewQ);
-        Button btnViewMap = (Button) findViewById(R.id.btnViewMap);
-
-        btnViewMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(BranchStatus.this, MapsActivity.class);
-                i.putExtra("lng", branchInfo.getGeoLng());
-                i.putExtra("lat", branchInfo.getGeoLat());
-                i.putExtra("name", branchInfo.getName());
-                startActivity(i);
-            }
-        });
 
         btnViewQ.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -57,6 +52,25 @@ public class BranchStatus extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        if (mapView != null)
+        {
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map){
+        MapsInitializer.initialize(getApplicationContext());
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(branchInfo.getGeoLat(),branchInfo.getGeoLng()))
+                .title(branchInfo.getName()));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(branchInfo.getGeoLat(),
+                        branchInfo.getGeoLng()),16));
+        map.setMapType(MAP_TYPE_SATELLITE);
     }
 
     public void setOpen(boolean isOpen, TextView tv){

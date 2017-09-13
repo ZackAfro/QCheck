@@ -1,9 +1,7 @@
 package com.example.neilbeukes.qcheck;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,29 +14,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements MyBranchRecycleViewAdapter.ItemClickListener {
 
@@ -53,13 +39,14 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setTitle("Qs");
 
         tvBranchesFound =  (TextView) findViewById(R.id.tvBranchFound);
         rvBranches = (RecyclerView) findViewById(R.id.rvBranches);
         getLocation();
-
     }
 
     @Override
@@ -140,11 +127,47 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
         }
     }
 
-    public void saveBrancesToArray(Location location){
-        final Branches brances = new Branches();
-        tvBranchesFound.setText("Locating nearest branches...");
+    //global
+    int cs = 0;
+    public void calculateTravelDistance(Location location){
+        for (int counter = 0; counter < branchArray.size(); counter++) {
+            final VolleyClient volleyClient = new VolleyClient();
+            tvBranchesFound.setText("Locating nearest branches...");
+            String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + location.getLatitude() +
+                    "," + location.getLongitude() + "&destinations=" + branchArray.get(counter).getGeoLat() + "," + branchArray.get(counter).getGeoLng()
+                    + "&key=AIzaSyCTuW4GcvCWRXRCS1wzrYUhzKJOu4ru-jg";
+            final int fCounter = counter;
+            volleyClient.sendVolley(url, getApplicationContext(), new VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    try {
+                        JSONObject obj = new JSONObject(result).getJSONArray("rows").getJSONObject(0)
+                                .getJSONArray("elements").getJSONObject(0);
+                        //Saving distance
+                        branchArray.get(fCounter).setDistanceText(obj.getJSONObject("distance").getString("text"));
+                        branchArray.get(fCounter).setDistanceKm(obj.getJSONObject("distance").getInt("value"));
+                        //saving travel time
+                        branchArray.get(fCounter).setTimeString(obj.getJSONObject("duration").getString("text"));
+                        branchArray.get(fCounter).setTimeSeconds(obj.getJSONObject("duration").getInt("value"));
+                        cs++;
+                        if (cs==branchArray.size()) {
+                            populateBranches();
+                        }
 
-        brances.checkForBranches(location, getApplicationContext(),new VolleyCallback(){
+                    } catch (Throwable t) {
+                        Log.e("My App", t.toString());
+                    }
+                }
+            });
+        }
+    }
+
+    public void saveBrancesToArray(final Location location){
+        final VolleyClient volleyClient = new VolleyClient();
+        tvBranchesFound.setText("Locating nearest branches...");
+        String url ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + location.getLatitude() +
+                "," + location.getLongitude()+ "&radius=6000&type=bank&keyword=absa%20branch&key=AIzaSyCTuW4GcvCWRXRCS1wzrYUhzKJOu4ru-jg";
+        volleyClient.sendVolley(url, getApplicationContext(),new VolleyCallback(){
             @Override
             public void onSuccess(String result){
                 try {
@@ -160,19 +183,14 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
                                         "Normal", row.getJSONObject("opening_hours").getBoolean("open_now"),
                                         row.getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
                                         row.getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
-
-                                Log.w("Array List" + i + " : ", "new Branch Info Recorded");
                             }
                         }catch(Exception e){
-                            Log.e("Array List" + i + " : ", e.toString());
                         }
-
-                        populateBranches();
                     }
                 } catch (Throwable t) {
                     Log.e("My App", t.toString());
                 }
-
+                calculateTravelDistance(location);
             }
         });
     }
@@ -186,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
         findViewById(R.id.pbRefresh).setVisibility(View.GONE);
         rvBranches.setVisibility(View.VISIBLE);
         rvBranches.setAdapter(adapter);
-        tvBranchesFound.setText("Here is the Absa branches near you :");
+        tvBranchesFound.setText("Select a branch:");
 
     }
 }

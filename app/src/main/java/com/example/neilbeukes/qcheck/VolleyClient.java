@@ -11,13 +11,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-public class Branches {
+public class VolleyClient {
 
-    public void checkForBranches(Location mLastKnownLocation, Context context, final VolleyCallback callback){
+    public void sendVolley(String url, Context context, final VolleyCallback callback){
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + mLastKnownLocation.getLatitude() +
-                "," + mLastKnownLocation.getLongitude()+ "&radius=6000&type=bank&keyword=absa%20branch&key=AIzaSyCTuW4GcvCWRXRCS1wzrYUhzKJOu4ru-jg";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

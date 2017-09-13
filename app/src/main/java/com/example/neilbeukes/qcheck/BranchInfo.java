@@ -8,6 +8,11 @@ public class BranchInfo {
     private double geoLat;
     private double geoLng;
     private boolean open;
+    private String distanceText;
+
+    private int distanceKm;
+    private int timeSeconds;
+    private String timeString;
 
     public BranchInfo(String name, String adress, String status, boolean open, double geoLat, double geoLng) {
         this.adress = adress;
@@ -16,6 +21,14 @@ public class BranchInfo {
         this.open = open;
         this.geoLat = geoLat;
         this.geoLng = geoLng;
+    }
+
+    public int getDistanceKm() {
+        return distanceKm;
+    }
+
+    public void setDistanceKm(int distanceKm) {
+        this.distanceKm = distanceKm;
     }
 
     public double getGeoLat() {
@@ -40,5 +53,29 @@ public class BranchInfo {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getDistanceText() {
+        return distanceText;
+    }
+
+    public void setDistanceText(String distanceText) {
+        this.distanceText = distanceText;
+    }
+
+    public int getTimeSeconds() {
+        return timeSeconds;
+    }
+
+    public void setTimeSeconds(int timeSeconds) {
+        this.timeSeconds = timeSeconds;
+    }
+
+    public String getTimeString() {
+        return timeString;
+    }
+
+    public void setTimeString(String timeString) {
+        this.timeString = timeString;
     }
 }
