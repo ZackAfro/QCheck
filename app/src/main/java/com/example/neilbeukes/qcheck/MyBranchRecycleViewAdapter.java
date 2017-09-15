@@ -22,8 +22,25 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
 
     public MyBranchRecycleViewAdapter(Context context, List<BranchInfo> data) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+        this.mData = sortData(data);
         this.context = context;
+    }
+    // Sort array by Time To Branch
+    private List<BranchInfo> sortData(List<BranchInfo> data) {
+        List<BranchInfo> sortedArray = data;
+        BranchInfo temp;
+        for (int i = 0; i < data.size(); i++) {
+            for (int j = 1; j < (data.size() - i); j++) {
+
+                if (sortedArray.get(j-1).getTimeSeconds() > sortedArray.get(j).getTimeSeconds()) {
+                    temp = sortedArray.get(j-1);
+                    sortedArray.set(j-1,sortedArray.get(j));
+                    sortedArray.set(j, temp);
+                }
+
+            }
+        }
+        return sortedArray;
     }
 
     // inflates the row layout from xml when needed
@@ -59,6 +76,8 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
         holder.myTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_car, 0, 0, 0);
         holder.myDistance.setText(distance);
         holder.myDistance.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_distance, 0, 0, 0);
+        holder.myQueue.setText("4");
+        holder.myQueue.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people, 0, 0, 0);
     }
 
     // total number of rows
@@ -74,6 +93,7 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
         public TextView myBranchStatus;
         public TextView myTime;
         public TextView myDistance;
+        public TextView myQueue;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,6 +101,8 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
             myBranchStatus = (TextView) itemView.findViewById(R.id.tvBranchStatus);
             myDistance = (TextView) itemView.findViewById(R.id.tvDistance);
             myTime  = (TextView) itemView.findViewById(R.id.tvTime);
+            myQueue = (TextView) itemView.findViewById(R.id.tvQueue);
+
             itemView.setOnClickListener(this);
         }
 

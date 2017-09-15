@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tvBranchStatus"
                 android:layout_alignStart="@+id/tvBranchStatus"
-                android:text="Open Today : 08:00 - 16:30"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp"/>
 
             <View
                 android:id="@+id/vTime"
@@ -50,7 +50,7 @@
                 android:background="@android:color/holo_red_light" />
 
             <TextView
-                android:id="@+id/tvBranchAdress"
+                android:id="@+id/tvBranchStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -59,40 +59,17 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:textSize="16sp"
                 android:textColor="#000000" />
 
-            <View
-                android:id="@+id/vAdress"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/tvBranchAdress"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/holo_red_light" />
-
-            <TextView
-                android:id="@+id/tvBranchStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/vAdress"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@+id/btnViewQ"
-                android:layout_toStartOf="@+id/btnViewQ"
-                android:textColor="#000000" />
-
-            <Button
-                android:id="@+id/btnViewQ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/vAdress"
-                android:layout_alignRight="@+id/vAdress"
-                android:layout_alignTop="@+id/tvBranchStatus"
-                android:background="@drawable/button_border" />
+            <!--<Button-->
+                <!--android:id="@+id/btnViewQ"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignEnd="@+id/vTime"-->
+                <!--android:layout_alignRight="@+id/vTime"-->
+                <!--android:layout_alignTop="@+id/tvBranchStatus"-->
+                <!--android:background="@drawable/button_border" />-->
 
 
         </RelativeLayout>

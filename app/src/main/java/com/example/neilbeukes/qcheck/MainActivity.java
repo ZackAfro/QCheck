@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
     ArrayList<BranchInfo> branchArray = new ArrayList<>();
     TextView tvBranchesFound;
     RecyclerView rvBranches;
+    String selectedQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setTitle("Qs");
+
+        selectedQuery = getIntent().getStringExtra("Query");
+        Log.w("Oi", selectedQuery);
 
         tvBranchesFound =  (TextView) findViewById(R.id.tvBranchFound);
         rvBranches = (RecyclerView) findViewById(R.id.rvBranches);
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(MainActivity.this,BranchStatus.class);
         intent.putExtra("branchInfo", (new Gson()).toJson(adapter.getItem(position)));
+        intent.putExtra("Query", selectedQuery);
         startActivity(intent);
     }
 
@@ -174,13 +179,17 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
 
                     JSONObject obj = new JSONObject(result);
                     JSONArray arrJson = obj.getJSONArray("results");
-
                     for (int i = 0; i < arrJson.length(); i++) {
                         JSONObject row = arrJson.getJSONObject(i);
+                        String status = "low";
+                        if (i%3==0)
+                            status = "high";
+                        else if (i%2==0)
+                            status = "medium";
                         try {
                             if (row.getString("name").toLowerCase().indexOf("atm".toLowerCase()) == -1 ) {
                                 branchArray.add(new BranchInfo(row.getString("name"), row.getString("vicinity"),
-                                        "Normal", row.getJSONObject("opening_hours").getBoolean("open_now"),
+                                        status, row.getJSONObject("opening_hours").getBoolean("open_now"),
                                         row.getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
                                         row.getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
                             }
