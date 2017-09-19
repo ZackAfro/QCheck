@@ -6,4 +6,96 @@
     android:layout_height="match_parent"
     tools:context="com.example.neilbeukes.qcheck.QStatus">
 
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:cardview="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cvTop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="6dp"
+        android:background="@color/colorPrimary"
+        cardview:cardElevation="3dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Your current position in the Queue:"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/vCircle"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/q_circle" />
+
+            <TextView
+                android:id="@+id/tvQPosition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="83dp"
+                android:text="5"
+                android:textColor="#000"
+                android:textSize="60sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnCancel"
+                android:layout_below="@id/vCircle"
+                android:layout_marginTop="50dp"
+                android:layout_centerHorizontal="true"
+                android:text="Cancel ticket"
+                android:background="@drawable/button_border"
+                android:paddingRight="6dp"
+                android:paddingLeft="6dp"/>
+
+            <View
+                android:id="@+id/vNotification"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/btnCancel"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/tvNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Enable smart notify"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:layout_below="@+id/vNotification"
+                android:layout_alignLeft="@+id/textView"
+                android:layout_alignStart="@+id/textView" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvNotification"
+                android:layout_alignBottom="@+id/tvNotification"
+                android:layout_alignRight="@+id/textView"
+                android:layout_alignEnd="@+id/textView"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
 </RelativeLayout>

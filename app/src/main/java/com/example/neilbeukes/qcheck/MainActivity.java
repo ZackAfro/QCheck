@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setTitle("Qs");
@@ -191,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
                                 branchArray.add(new BranchInfo(row.getString("name"), row.getString("vicinity"),
                                         status, row.getJSONObject("opening_hours").getBoolean("open_now"),
                                         row.getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
-                                        row.getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
+                                        row.getJSONObject("geometry").getJSONObject("location").getDouble("lng"), row.getString("id")));
                             }
                         }catch(Exception e){
                         }

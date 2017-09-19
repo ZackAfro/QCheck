@@ -9,18 +9,23 @@ public class BranchInfo {
     private double geoLng;
     private boolean open;
     private String distanceText;
+    private String id;
 
     private int distanceKm;
     private int timeSeconds;
     private String timeString;
 
-    public BranchInfo(String name, String adress, String status, boolean open, double geoLat, double geoLng) {
+    public BranchInfo(String name, String adress, String status, boolean open, double geoLat, double geoLng, String id) {
         this.adress = adress;
         this.status = status;
         this.name = name;
         this.open = open;
         this.geoLat = geoLat;
         this.geoLng = geoLng;
+    }
+
+    public String getId(){
+        return id;
     }
 
     public int getDistanceKm() {
