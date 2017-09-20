@@ -50,28 +50,13 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
         return new ViewHolder(view);
     }
 
-    // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String branch = mData.get(position).getName();
-        String status = mData.get(position).getStatus();
         String time = mData.get(position).getTimeString();
         String distance = mData.get(position).getDistanceText();
 
-        switch (status){
-            case "high":
-                holder.myBranchStatus.setTextColor(ContextCompat.getColor(context, R.color.high));
-                break;
-            case "medium":
-                holder.myBranchStatus.setTextColor(ContextCompat.getColor(context, R.color.medium));
-                break;
-            case "low":
-                holder.myBranchStatus.setTextColor(ContextCompat.getColor(context, R.color.low));
-                break;
-        }
-
         holder.myBranchName.setText(branch);
-        holder.myBranchStatus.setText(status);
         holder.myTime.setText(time);
         holder.myTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_car, 0, 0, 0);
         holder.myDistance.setText(distance);
@@ -98,7 +83,6 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
         public ViewHolder(View itemView) {
             super(itemView);
             myBranchName = (TextView) itemView.findViewById(R.id.tvBranchName);
-            myBranchStatus = (TextView) itemView.findViewById(R.id.tvBranchStatus);
             myDistance = (TextView) itemView.findViewById(R.id.tvDistance);
             myTime  = (TextView) itemView.findViewById(R.id.tvTime);
             myQueue = (TextView) itemView.findViewById(R.id.tvQueue);

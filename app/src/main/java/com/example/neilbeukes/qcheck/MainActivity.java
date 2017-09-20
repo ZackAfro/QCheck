@@ -180,15 +180,10 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
                     JSONArray arrJson = obj.getJSONArray("results");
                     for (int i = 0; i < arrJson.length(); i++) {
                         JSONObject row = arrJson.getJSONObject(i);
-                        String status = "low";
-                        if (i%3==0)
-                            status = "high";
-                        else if (i%2==0)
-                            status = "medium";
                         try {
-                            if (row.getString("name").toLowerCase().indexOf("atm".toLowerCase()) == -1 ) {
+                            if ((row.getString("name").toLowerCase().indexOf("atm".toLowerCase()) == -1) && (row.getString("name").toLowerCase().indexOf("bank".toLowerCase()) == -1)) {
                                 branchArray.add(new BranchInfo(row.getString("name"), row.getString("vicinity"),
-                                        status, row.getJSONObject("opening_hours").getBoolean("open_now"),
+                                        "", row.getJSONObject("opening_hours").getBoolean("open_now"),
                                         row.getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
                                         row.getJSONObject("geometry").getJSONObject("location").getDouble("lng"), row.getString("id")));
                             }
