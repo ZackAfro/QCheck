@@ -3,6 +3,7 @@ package com.example.neilbeukes.qcheck;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
@@ -34,9 +35,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.R.attr.data;
 import static android.R.attr.defaultValue;
 import static android.R.attr.value;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 import static java.security.AccessController.getContext;
 
@@ -44,6 +50,8 @@ public class BranchStatus extends AppCompatActivity implements OnMapReadyCallbac
 
         BranchInfo branchInfo;
         String selectedQuery;
+        int ticketId;
+        int ticketNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +60,7 @@ public class BranchStatus extends AppCompatActivity implements OnMapReadyCallbac
 
         branchInfo = new Gson().fromJson(getIntent().getStringExtra("branchInfo"), BranchInfo.class);
 
-        getSupportActionBar().setTitle(branchInfo.getName());
+        getSupportActionBar().setTitle("");
         selectedQuery = getIntent().getStringExtra("Query");
         TextView tvBranchEnq = (TextView) findViewById(R.id.tvBranchEnq);
         TextView tvTime = (TextView) findViewById(R.id.tvBusinessHours);
@@ -63,10 +71,8 @@ public class BranchStatus extends AppCompatActivity implements OnMapReadyCallbac
 
         setOpen(branchInfo.isOpen(), tvTime);
         tvBranchEnq.setText(selectedQuery);
-        tvQLength.setText(Html.fromHtml("There are <b>5</b> people in the Queue"));
-        tvQtime.setText(Html.fromHtml("Estimated waiting time is <b> 20 </b> mins"));
-
-//        tvStatus.setText(Html.fromHtml(branchInfo.getName() + " is currently <b>" + branchInfo.getStatus() + "</b>"));
+        tvQLength.setText(Html.fromHtml("Number of people in the Queue: <b>" + branchInfo.getQueueLength() + "</b>"));
+        tvQtime.setText(Html.fromHtml("Estimated waiting time: <b>" + branchInfo.getQueueLength() * 5 + " mins</b>"));
 
         btnRequestTicket.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -92,14 +98,14 @@ public class BranchStatus extends AppCompatActivity implements OnMapReadyCallbac
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(branchInfo.getGeoLat(),
                         branchInfo.getGeoLng()),16));
-        map.setMapType(MAP_TYPE_SATELLITE);
+        map.setMapType(MAP_TYPE_HYBRID);
     }
 
     public void setOpen(boolean isOpen, TextView tv){
         if (isOpen)
-            tv.setText(Html.fromHtml("This Branch is Currently : <b>Open</b>"));
+            tv.setText(Html.fromHtml(branchInfo.getName() +  " is Currently : <b>Open</b>"));
         else
-            tv.setText(Html.fromHtml("This Branch is Currently : <b>Closed</b>"));
+            tv.setText(Html.fromHtml(branchInfo.getName() + " is Currently : <b>Closed</b>"));
     }
 
     public void throwAlertDialog(){
@@ -110,42 +116,49 @@ public class BranchStatus extends AppCompatActivity implements OnMapReadyCallbac
             builder = new AlertDialog.Builder(this);
         }
         builder.setTitle("Ticket request confirmation")
-                .setMessage("Please enter your Cell number in the input field below and press request to recieve your ticket");
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.request_input, (ViewGroup) findViewById(android.R.id.content), false);
-        final EditText input = (EditText) viewInflated.findViewById(R.id.inputNumber);
-        final CheckBox cbCellNum = (CheckBox) viewInflated.findViewById(R.id.cbCellNum);
-
-        try {
-            SharedPreferences sp = getSharedPreferences("CELL_NUMBER", MODE_PRIVATE);
-            input.setText(sp.getString("cellNum", ""));
-        }catch (Exception e)
-        {
-            Log.w("Shared Prefernce Error", e);
-        }
-
-        builder.setView(viewInflated);
+                .setMessage("Are you sure you would like to book a ticket in the " + selectedQuery + " Queue at " + branchInfo.getName() + " ?");
                 builder.setPositiveButton("Request Ticket", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if (cbCellNum.isChecked()) {
-                            SharedPreferences sp = getSharedPreferences("CELL_NUMBER", MODE_PRIVATE);
-                            SharedPreferences.Editor edit = sp.edit();
-                            edit.putString("cellNum", input.getText().toString());
-                            edit.apply();
-                        }
+                            final VolleyClient volleyClient = new VolleyClient();
+                            String url ="http://qshack-001-site1.htempurl.com/WebService/GetQueue.asmx/CreateTicket?" +
+                                    "GoogleId=" + branchInfo.getId() + "&FunctionType=" + selectedQuery;
+                            volleyClient.sendVolley(url, getApplicationContext(),new VolleyCallback(){
+                                @Override
+                                public void onSuccess(String result) {
+                                    try {
+                                        String jsonstring = result.substring(result.indexOf("{"), result.indexOf("}") + 1);
+                                        Log.w("Returned", jsonstring);
+                                        JSONObject obj = new JSONObject(jsonstring);
+                                        ticketId = obj.getInt("value");
+                                        ticketNumber = obj.getInt("data");
 
-                        Intent i = new Intent();
-                        i.setClass(BranchStatus.this, QStatus.class);
-                        i.putExtra("branch", branchInfo.getName());
-                        i.putExtra("cellNum", input.getText().toString());
-                        startActivity(i);
+
+                                        SharedPreferences.Editor editor = getSharedPreferences("TICKET", MODE_PRIVATE).edit();
+                                        editor.putInt("id", ticketId);
+                                        editor.putInt("number", ticketNumber);
+                                        editor.apply();
+
+                                        Intent i = new Intent();
+                                        i.setClass(BranchStatus.this, QStatus.class);
+                                        i.putExtra("branch", branchInfo.getName());
+                                        //i.putExtra("cellNum", input.getText().toString());
+                                        startActivity(i);
+
+                                        Log.w("Created", ticketId + "" + ticketNumber);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                         });
+
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
-                .setIcon(android.R.drawable.ic_dialog_info)
+                .setIcon(android.R.drawable.ic_menu_info_details)
                 .show();
     }
 }

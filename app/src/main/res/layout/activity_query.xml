@@ -6,78 +6,121 @@
     android:layout_height="match_parent"
     tools:context="com.example.neilbeukes.qcheck.QueryActivity">
 
-    <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:cardview="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+    <ImageView
+        android:src="@drawable/background_ocean"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        cardview:cardCornerRadius="2dp"
-        cardview:cardElevation="3dp"
-        android:layout_margin="5dp"
-
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp">
+    <ImageView
+        android:src="@drawable/logo_bigger"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_height="125dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
-            <!--<ImageView-->
-                <!--android:src="@drawable/basilisk"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:scaleType="fitXY"/>-->
+    <TextView
+        android:id="@+id/tvHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/tvQuestion"
+        android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="90dp"
+        android:text="What would you like to do?"
+        android:layout_above="@+id/ivEnquire"
+        android:layout_centerHorizontal="true" />
 
-            <ImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="170dp"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/logo"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+    <ImageView
+        android:id="@+id/ivEnquire"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        app:srcCompat="@drawable/enquire"
+        android:layout_marginLeft="43dp"
+        android:layout_marginStart="43dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="181dp" />
 
-            <TextView
-                android:id="@+id/tvQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:layout_below="@+id/ivLogo"
-                android:textSize="16sp"
-                android:text="What whould you like to do at the branch?"
-                android:textColor="#FFFFFF" />
+    <ImageView
+        android:id="@+id/ivTeller"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        app:srcCompat="@drawable/teller"
+        android:layout_marginLeft="43dp"
+        android:layout_marginStart="43dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/ivEnquire"
+        android:layout_marginBottom="181dp" />
 
-            <Spinner
-                android:id="@+id/enquiriesSpinnner"
-                android:layout_width="fill_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:layout_below="@+id/tvQuestion"
-                android:background="@drawable/spinner_border"
-                android:textSize="13sp"/>
+    <ImageView
+        android:id="@+id/ivConsultant"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        app:srcCompat="@drawable/consultant"
+        android:layout_marginLeft="43dp"
+        android:layout_marginStart="43dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/ivTeller"
+        android:layout_marginBottom="181dp" />
 
-            <Button
-                android:id="@+id/btnContinue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="30dp"
-                android:layout_marginEnd="29dp"
-                android:layout_marginRight="29dp"
-                android:background="@drawable/button_border"
-                android:text="Continue" />
+    <TextView
+        android:id="@+id/tvQEnquire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enquiry"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_alignBaseline="@+id/tvQTeller"
+        android:layout_alignBottom="@+id/tvQTeller"
+        android:layout_alignLeft="@+id/tvQuestion"
+        android:layout_alignStart="@+id/tvQuestion"
+        android:layout_toLeftOf="@+id/ivTeller"
+        android:layout_toStartOf="@+id/ivTeller" />
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    <TextView
+        android:id="@+id/tvQTeller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="81dp"
+        android:text="Teller"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_below="@+id/tvQuestion"
+        android:layout_alignLeft="@+id/ivTeller"
+        android:layout_alignStart="@+id/ivTeller"
+        android:layout_toLeftOf="@+id/ivConsultant"
+        android:layout_toStartOf="@+id/ivConsultant" />
 
+    <TextView
+        android:id="@+id/tvQConsultant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Consultant"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_alignBaseline="@+id/tvQTeller"
+        android:layout_alignBottom="@+id/tvQTeller"
+        android:layout_alignLeft="@+id/ivConsultant"
+        android:layout_alignStart="@+id/ivConsultant"
+        android:layout_alignRight="@+id/tvQuestion"
+        android:layout_alignEnd="@+id/tvQuestion" />
 
 </RelativeLayout>

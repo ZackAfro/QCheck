@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("Qs");
+        getSupportActionBar().setTitle("");
 
         selectedQuery = getIntent().getStringExtra("Query");
         Log.w("Oi", selectedQuery);
@@ -155,9 +155,36 @@ public class MainActivity extends AppCompatActivity implements MyBranchRecycleVi
                         branchArray.get(fCounter).setTimeSeconds(obj.getJSONObject("duration").getInt("value"));
                         cs++;
                         if (cs==branchArray.size()) {
-                            populateBranches();
+                            getQueues();
                         }
 
+                    } catch (Throwable t) {
+                        Log.e("My App", t.toString());
+                    }
+                }
+            });
+        }
+    }
+
+    int kk = 0;
+    public void getQueues() {
+        final VolleyClient volleyClient = new VolleyClient();
+        for (int j = 0; j < branchArray.size(); j++) {
+            //String url = "http://qshack-001-site1.htempurl.com/WebService/GetQueue.asmx/GetQueueForBranch?" +
+            //"GoogleId=" + branchArray.get(j).getId() + "&FunctionType=" + selectedQuery;
+            String url = "http://qshack-001-site1.htempurl.com/WebService/GetQueue.asmx/GetQueueForBranch?" +
+                "GoogleId=" + branchArray.get(j).getId() + "&FunctionType=" + selectedQuery;
+            final int jj = j;
+            volleyClient.sendVolley(url, getApplicationContext(), new VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    try {
+                        //Log.w("Get Queue: ", jj + " " + result.charAt(result.length() - 7));
+                        branchArray.get(jj).setQueueLength(Character.getNumericValue(result.charAt(result.length() - 7)));
+                        kk++;
+                        if (kk==branchArray.size()) {
+                            populateBranches();
+                        }
                     } catch (Throwable t) {
                         Log.e("My App", t.toString());
                     }

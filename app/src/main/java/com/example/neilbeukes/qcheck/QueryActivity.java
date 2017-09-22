@@ -1,63 +1,69 @@
 package com.example.neilbeukes.qcheck;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
+import static com.example.neilbeukes.qcheck.R.id.btnRequestTicket;
+
 public class QueryActivity extends AppCompatActivity {
 
     String selectedName;
+    String timeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
+        getSupportActionBar().setTitle("");
 
-        final Spinner dropdown = (Spinner)findViewById(R.id.enquiriesSpinnner);
-        String[] items = new String[]{"General Enquiries", "Tellers", "Consultants"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        Button button= (Button) findViewById(R.id.btnContinue);
-        button.setOnClickListener(new View.OnClickListener() {
+        if (hour >= 12)
+            timeText = "Good Afternoon.";
+        else
+            timeText = "Good Morning.";
+
+        TextView tvHeading = (TextView) findViewById(R.id.tvHeading);
+        tvHeading.setText(timeText);
+
+        ImageView ivQuery = (ImageView) findViewById(R.id.ivEnquire);
+        ImageView ivTeller= (ImageView) findViewById(R.id.ivTeller);
+        ImageView ivConsultants = (ImageView) findViewById(R.id.ivConsultant);
+
+        ivQuery.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                goToMain(selectedName);
+                goToMain("Enquiries");
             }
         });
 
-        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ivTeller.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-//                ((TextView) dropdown.getChildAt(0)).setTextColor(Color.WHITE);
-//                ((TextView) dropdown.getChildAt(0)).setTextSize(14);
-
-                switch (position){
-                    case 0:
-                        selectedName = "General Enquiries";
-                        break;
-                    case 1:
-                        selectedName = "Consultants";
-                        break;
-                    case 2:
-                        selectedName = "Tellers";
-                        break;
-                    default:
-                        selectedName = "No value selected";
-                }
+            public void onClick(View v) {
+                goToMain("Tellers");
             }
+        });
 
+        ivConsultants.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
+            public void onClick(View v) {
+                goToMain("Consultants");
             }
         });
     }

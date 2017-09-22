@@ -10,7 +10,7 @@ public class BranchInfo {
     private boolean open;
     private String distanceText;
     private String id;
-
+    private int QueueLength;
     private int distanceKm;
     private int timeSeconds;
     private String timeString;
@@ -22,10 +22,19 @@ public class BranchInfo {
         this.open = open;
         this.geoLat = geoLat;
         this.geoLng = geoLng;
+        this.id = id;
     }
 
     public String getId(){
         return id;
+    }
+
+    public int getQueueLength() {
+        return QueueLength;
+    }
+
+    public void setQueueLength(int queueLength) {
+        QueueLength = queueLength;
     }
 
     public int getDistanceKm() {

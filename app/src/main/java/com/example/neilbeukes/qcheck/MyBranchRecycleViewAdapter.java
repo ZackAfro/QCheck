@@ -55,13 +55,14 @@ public class MyBranchRecycleViewAdapter extends RecyclerView.Adapter<MyBranchRec
         String branch = mData.get(position).getName();
         String time = mData.get(position).getTimeString();
         String distance = mData.get(position).getDistanceText();
+        int queue = mData.get(position).getQueueLength();
 
         holder.myBranchName.setText(branch);
         holder.myTime.setText(time);
         holder.myTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_car, 0, 0, 0);
         holder.myDistance.setText(distance);
         holder.myDistance.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_distance, 0, 0, 0);
-        holder.myQueue.setText("4");
+        holder.myQueue.setText(queue + "");
         holder.myQueue.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people, 0, 0, 0);
     }
 
